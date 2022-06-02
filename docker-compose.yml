@@ -8,11 +8,11 @@ services:
        - ./.env
     ports:
       - "5432:5432"
-    web:
-      build:
-        context: ./backend
-        dockerfile: Dockerfile
-      command: sh entrypoint.sh
+  web:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    command: sh entrypoint.sh
     volumes:
       - .:/code
     env_file:
