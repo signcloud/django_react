@@ -13,8 +13,9 @@ services:
       context: ./backend
       dockerfile: Dockerfile
     command: sh entrypoint.sh
-#    volumes:
-#      - ./backend/todo:/code
+    volumes:
+      - django_static_volume:/code/staticfiles
+#      - ./todo:/code
     env_file:
        - ./.env
     ports:
@@ -27,8 +28,7 @@ services:
       dockerfile: Dockerfile
     restart: always
     volumes:
-      - ./frontend:/frontend
-      - staticfiles:/staticfiles
+      - django_static_volume:/usr/src/app/staticfiles
     ports:
       - "80:80"
     depends_on:
@@ -46,4 +46,4 @@ services:
       - web
 volumes:
   db:
-  staticfiles:
+  django_static_volume:
