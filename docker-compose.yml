@@ -12,7 +12,7 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    command: python manage.py runserver 8000
+    command: sh entrypoint.sh
     volumes:
       - .:/code
     env_file:
