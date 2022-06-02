@@ -12,7 +12,7 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    command: sh entrypoint.sh
+    command: sh ./backend/entrypoint.sh
     volumes:
       - .:/code
     env_file:
