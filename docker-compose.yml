@@ -1,0 +1,38 @@
+version: "3"
+services:
+  db:
+    image: postgres
+    volumes:
+      - ./database/db:/var/lib/postgresql/data
+    env_file:
+       - ./.env
+    ports:
+      - "5432:5432"
+    web:
+      build:
+        context: ./backend
+        dockerfile: Dockerfile
+      command: sh entrypoint.sh
+    volumes:
+      - .:/code
+    env_file:
+       - ./.env
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+  nginx:
+    build:
+      context: .
+      dockerfile: ./webserver/Dockerfile
+    restart: always
+    volumes:
+      - ./frontend:/frontend
+      - staticfiles:/staticfiles
+    ports:
+      - "80:80"
+    depends_on:
+      - web
+volumes:
+  db:
+  staticfiles:
