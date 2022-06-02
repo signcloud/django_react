@@ -6,5 +6,5 @@ COPY requirements.txt /code/
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 COPY . .
-COPY ./manage.py .
+COPY todo/manage.py .
 COPY ./todo .
