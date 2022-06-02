@@ -21,5 +21,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('api.urls')),
     path('api/accounts/', include('accounts.urls')),
-    path('', TemplateView.as_view(template_name='../../frontend/build/index.html')),
+    path('', TemplateView.as_view(template_name='../../../frontend/todo-app/build/index.html')),
 ]

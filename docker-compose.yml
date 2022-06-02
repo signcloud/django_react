@@ -1,4 +1,4 @@
-version: "3"
+version: "3.9"
 services:
   db:
     image: postgres
@@ -12,9 +12,9 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    command: sh ./backend/entrypoint.sh
-    volumes:
-      - .:/code
+    command: sh entrypoint.sh
+#    volumes:
+#      - ./backend/todo:/code
     env_file:
        - ./.env
     ports:
@@ -23,14 +23,25 @@ services:
       - db
   nginx:
     build:
-      context: .
-      dockerfile: ./webserver/Dockerfile
+      context: ./webserver
+      dockerfile: Dockerfile
     restart: always
     volumes:
       - ./frontend:/frontend
       - staticfiles:/staticfiles
     ports:
       - "80:80"
+    depends_on:
+      - web
+  react:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    expose:
+      - 3000
+    env_file:
+      - ./.env
+    command: serve -s build -l 3000
     depends_on:
       - web
 volumes:
