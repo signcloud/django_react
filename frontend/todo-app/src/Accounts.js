@@ -48,7 +48,7 @@ class Accounts extends React.Component {
     fetchUsers() {
         console.log('Fetching...')
 
-        fetch('http://127.0.0.1:8000/api/accounts/user_list/')
+        fetch('http://0.0.0.0/api/accounts/user_list/')
             .then(response => response.json())
             .then(data => {
                 this.setState({
@@ -82,10 +82,10 @@ class Accounts extends React.Component {
 
         let csrftoken = this.getCookie('csrftoken')
 
-        let url = 'http://127.0.0.1:8000/api/accounts/user_create/'
+        let url = 'http://0.0.0.0/api/accounts/user_create/'
 
         if (this.state.editing == true) {
-            url = `http://127.0.0.1:8000/api/accounts/user_update/${this.state.activeItem.id}/`
+            url = `http://0.0.0.0/api/accounts/user_update/${this.state.activeItem.id}/`
             this.setState({
                 editing: false
             })
@@ -130,7 +130,7 @@ class Accounts extends React.Component {
     deleteItem(user) {
         let csrftoken = this.getCookie('csrftoken')
 
-        fetch(`http://127.0.0.1:8000/api/accounts/user_delete/${user.id}/`, {
+        fetch(`http://0.0.0.0/api/accounts/user_delete/${user.id}/`, {
             method: 'DELETE',
             headers: {
                 'Content-type': 'application/json',

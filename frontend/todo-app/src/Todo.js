@@ -48,7 +48,7 @@ class Todo extends React.Component {
     fetchTasks() {
         console.log('Fetching...')
 
-        fetch('http://127.0.0.1:8000/api/task-list/')
+        fetch('http://0.0.0.0/api/task-list/')
             .then(response => response.json())
             .then(data =>
                 this.setState({
@@ -77,10 +77,10 @@ class Todo extends React.Component {
 
         let csrftoken = this.getCookie('csrftoken')
 
-        let url = 'http://127.0.0.1:8000/api/task-create/'
+        let url = 'http://0.0.0.0/api/task-create/'
 
         if (this.state.editing == true) {
-            url = `http://127.0.0.1:8000/api/task-update/${this.state.activeItem.id}/`
+            url = `http://0.0.0.0/api/task-update/${this.state.activeItem.id}/`
             this.setState({
                 editing: false
             })
@@ -120,7 +120,7 @@ class Todo extends React.Component {
     deleteItem(task) {
         let csrftoken = this.getCookie('csrftoken')
 
-        fetch(`http://127.0.0.1:8000/api/task-delete/${task.id}/`, {
+        fetch(`http://0.0.0.0/api/task-delete/${task.id}/`, {
             method: 'DELETE',
             headers: {
                 'Content-type': 'application/json',
@@ -137,7 +137,7 @@ class Todo extends React.Component {
 
         task.completed = !task.completed
         let csrftoken = this.getCookie('csrftoken')
-        let url = `http://127.0.0.1:8000/api/task-update/${task.id}/`
+        let url = `http://0.0.0.0/api/task-update/${task.id}/`
 
         fetch(url, {
             method: 'POST',
