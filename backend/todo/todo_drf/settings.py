@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'knox',
-    'accounts'
+    'accounts.apps.AccountsConfig',
+    'rest_framework_simplejwt'
 
 ]
 
@@ -133,6 +134,16 @@ STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 # STATICFILES_DIRS = [
 #     os.path.join(BASE_DIR, 'frontend/build/../../frontend/build/static')
 # ]
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticatedOrReadOnly',
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
+}
 
 CORS_ORIGIN_ALLOW_ALL = True
 

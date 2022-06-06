@@ -17,17 +17,12 @@ class Accounts extends React.Component {
             },
             editing: false,
         }
-        this.fetchUsers = this.fetchUsers.bind(this)
         this.handleChange = this.handleChange.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
         this.getCookie = this.getCookie.bind(this)
-        this.startEdit = this.startEdit.bind(this)
-        this.deleteItem = this.deleteItem.bind(this)
-
     };
 
     getCookie(name) {
-        document.getElementById('form').reset();
         let cookieValue = null;
         if (document.cookie && document.cookie !== '') {
             let cookies = document.cookie.split(';');
@@ -126,29 +121,7 @@ class Accounts extends React.Component {
 
     }
 
-    startEdit(user) {
-        console.log(user)
-        this.setState({
-            activeItem: user,
-            editing: true,
-        })
-    }
 
-
-    deleteItem(user) {
-        let csrftoken = this.getCookie('csrftoken')
-
-        fetch(`http://0.0.0.0/api/accounts/user_delete/${user.id}/`, {
-            method: 'DELETE',
-            headers: {
-                'Content-type': 'application/json',
-                'X-CSRFToken': csrftoken,
-            },
-        }).then((response) => {
-
-            this.fetchUsers()
-        })
-    }
 
     render() {
         let users = this.state.accountsList
@@ -160,30 +133,10 @@ class Accounts extends React.Component {
                         <form onSubmit={this.handleSubmit} id="form">
                             <div className="flex-wrapper">
                                 <div style={{flex: 6}}>
-                                    {/*<input onChange={this.handleChange} className="form-control" id="username"*/}
-                                    {/*       value={this.state.activeItem.username}*/}
-                                    {/*       type="text" name="username"*/}
-                                    {/*       placeholder="Username"/>*/}
-                                    {/*<br/>*/}
-                                    <input onChange={this.handleChange} className="form-control" id="first_name"
-                                           value={this.state.activeItem.first_name}
-                                           type="text" name="first_name"
-                                           placeholder="First name"/>
-                                    <br/>
-                                    <input onChange={this.handleChange} className="form-control" id="last_name"
-                                           value={this.state.activeItem.last_name}
-                                           type="text" name="last_name"
-                                           placeholder="Last name"/>
-                                    <br/>
                                     <input onChange={this.handleChange} className="form-control" id="email"
                                            value={this.state.activeItem.email}
                                            type="email" name="email"
                                            placeholder="Email"/>
-                                    <br/>
-                                     <input onChange={this.handleChange} className="form-control" id="mobile"
-                                           value={this.state.activeItem.mobile}
-                                           type="text" name="mobile"
-                                           placeholder="Mobile"/>
                                     <br/>
                                     <input onChange={this.handleChange} className="form-control" id="password"
                                            value={this.state.activeItem.password}
@@ -194,30 +147,6 @@ class Accounts extends React.Component {
                                 </div>
                             </div>
                         </form>
-                    </div>
-
-                    <div id="list-wrapper">
-                        {users.map(function (user, index) {
-                            return (
-                                <div key={index} className="user-wrapper flex-wrapper">
-                                    <div style={{flex: 7}}>
-                                        {user.first_name} {user.last_name} ({user.email})
-                                    </div>
-
-                                    <div style={{flex: 1}}>
-                                        <button onClick={() => self.startEdit(user)}
-                                                className="btn btn-sm btn-outline-info">Edit
-                                        </button>
-                                    </div>
-
-                                    <div style={{flex: 1}}>
-                                        <button onClick={() => self.deleteItem(user)}
-                                                className="btn btn-sm btn-outline-dark delete">-
-                                        </button>
-                                    </div>
-                                </div>
-                            )
-                        })}
                     </div>
                 </div>
             </div>

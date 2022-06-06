@@ -1,9 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework.permissions import IsAuthenticated
+from django.contrib.auth.decorators import login_required
 from rest_framework.response import Response
 from .serializers import TaskSerializer
 
@@ -25,12 +26,15 @@ def apiOverview(request):
     return Response(api_urls)
 
 
+@login_required(login_url='/admin/')
 @authentication_classes([SessionAuthentication, BasicAuthentication])
-@permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated, ])
 @api_view(['GET'])
 def taskList(request):
-    tasks = Task.objects.all().order_by('-id')
-    serializer = TaskSerializer(tasks, many=True)
+    if not request.user:
+        redirect("/login")
+    tasks = Task.objects.filter(user_id=request.user.id).order_by('-id')
+    serializer = TaskSerializer(tasks, context={'request': request}, many=True)
     return Response(serializer.data)
 
 
@@ -41,14 +45,18 @@ def taskDetail(request, pk):
     return Response(serializer.data)
 
 
+@login_required(login_url='/admin/')
+@authentication_classes([SessionAuthentication, BasicAuthentication])
+@permission_classes([IsAuthenticated, ])
 @api_view(['POST'])
 def taskCreate(request):
+    data = request.data
+    data['user'] = request.user.id
     serializer = TaskSerializer(data=request.data)
-
     if serializer.is_valid():
         serializer.save()
-
-    return Response(serializer.data)
+        return Response(serializer.data)
+    return Response(serializer.errors)
 
 
 @api_view(['POST'])

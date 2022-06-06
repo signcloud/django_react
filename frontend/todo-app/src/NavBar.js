@@ -4,7 +4,7 @@ import './App.css';
 
 function NavBar() {
     return (<nav className="task-wrapper" id="task-container">
-        <Link to="/">Todos</Link> | <Link to="/accounts">Accounts</Link></nav>
+            <Link to="/login">Login</Link> | <Link to="/">Todos</Link> | <Link to="/accounts">Accounts</Link></nav>
 )
 }
 

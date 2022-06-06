@@ -17,6 +17,7 @@ import os
 from django.contrib import admin
 from django.urls import path, include
 from django.views.generic import TemplateView
+from rest_framework_simplejwt.views import TokenRefreshView, TokenObtainPairView
 
 template_path = os.path.dirname(os.path.dirname(__file__))
 print(template_path)
@@ -25,4 +26,6 @@ urlpatterns = [
     path('api/', include('api.urls')),
     path('api/accounts/', include('accounts.urls')),
     path('', TemplateView.as_view(template_name='../../frontend/todo-app/build/index.html')),
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ]
