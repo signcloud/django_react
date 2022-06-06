@@ -9,7 +9,9 @@ class Accounts extends React.Component {
             accountsList: [],
             activeItem: {
                 id: null,
-                username: '',
+                first_name: '',
+                last_name: '',
+                mobile: '',
                 email: '',
                 password: '',
             },
@@ -59,14 +61,19 @@ class Accounts extends React.Component {
     }
 
     handleChange(e) {
-        if (e.target.name == "username"){
-             this.state.activeItem.username = e.target.value
-        }else if (e.target.name == "email"){
+        if (e.target.name == "username") {
+            this.state.activeItem.username = e.target.value
+        } else if (e.target.name == "email") {
             this.state.activeItem.email = e.target.value
-        }else if (e.target.name == "password"){
-             this.state.activeItem.password = e.target.value
+        } else if (e.target.name == "password") {
+            this.state.activeItem.password = e.target.value
+        } else if (e.target.name == "first_name") {
+            this.state.activeItem.first_name = e.target.value
+        } else if (e.target.name == "last_name") {
+            this.state.activeItem.last_name = e.target.value
+        } else if (e.target.name == "mobile") {
+            this.state.activeItem.mobile = e.target.value
         }
-
         this.setState({
             activeItem: {
                 ...this.state.activeItem
@@ -85,12 +92,13 @@ class Accounts extends React.Component {
         let url = 'http://0.0.0.0/api/accounts/user_create/'
 
         if (this.state.editing == true) {
+
             url = `http://0.0.0.0/api/accounts/user_update/${this.state.activeItem.id}/`
+            console.log(url)
             this.setState({
                 editing: false
             })
         }
-
 
 
         console.log(JSON.stringify(this.state.activeItem))
@@ -152,22 +160,37 @@ class Accounts extends React.Component {
                         <form onSubmit={this.handleSubmit} id="form">
                             <div className="flex-wrapper">
                                 <div style={{flex: 6}}>
-                                    <input onChange={this.handleChange} className="form-control" id="title"
-                                           value={this.state.activeItem.username}
-                                           type="text" name="username"
-                                           placeholder="Username"/>
+                                    {/*<input onChange={this.handleChange} className="form-control" id="username"*/}
+                                    {/*       value={this.state.activeItem.username}*/}
+                                    {/*       type="text" name="username"*/}
+                                    {/*       placeholder="Username"/>*/}
+                                    {/*<br/>*/}
+                                    <input onChange={this.handleChange} className="form-control" id="first_name"
+                                           value={this.state.activeItem.first_name}
+                                           type="text" name="first_name"
+                                           placeholder="First name"/>
+                                    <br/>
+                                    <input onChange={this.handleChange} className="form-control" id="last_name"
+                                           value={this.state.activeItem.last_name}
+                                           type="text" name="last_name"
+                                           placeholder="Last name"/>
                                     <br/>
                                     <input onChange={this.handleChange} className="form-control" id="email"
                                            value={this.state.activeItem.email}
                                            type="email" name="email"
                                            placeholder="Email"/>
                                     <br/>
+                                     <input onChange={this.handleChange} className="form-control" id="mobile"
+                                           value={this.state.activeItem.mobile}
+                                           type="text" name="mobile"
+                                           placeholder="Mobile"/>
+                                    <br/>
                                     <input onChange={this.handleChange} className="form-control" id="password"
                                            value={this.state.activeItem.password}
                                            type="password" name="password"
                                            placeholder="Password"/>
                                     <br/>
-                                        <input id="submit" className="btn btn-warning" type="submit" name="Add"/>
+                                    <input id="submit" className="btn btn-warning" type="submit" name="Add"/>
                                 </div>
                             </div>
                         </form>
@@ -178,7 +201,7 @@ class Accounts extends React.Component {
                             return (
                                 <div key={index} className="user-wrapper flex-wrapper">
                                     <div style={{flex: 7}}>
-                                           {user.username} ({user.email})
+                                        {user.username} ({user.email})
                                     </div>
 
                                     <div style={{flex: 1}}>

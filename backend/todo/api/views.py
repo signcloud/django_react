@@ -1,7 +1,9 @@
 from django.shortcuts import render
 from django.http import JsonResponse
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes, authentication_classes
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from .serializers import TaskSerializer
 
@@ -23,6 +25,8 @@ def apiOverview(request):
     return Response(api_urls)
 
 
+@authentication_classes([SessionAuthentication, BasicAuthentication])
+@permission_classes([IsAuthenticated])
 @api_view(['GET'])
 def taskList(request):
     tasks = Task.objects.all().order_by('-id')
