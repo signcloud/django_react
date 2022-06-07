@@ -12,7 +12,9 @@ from .models import Task
 
 
 # Create your views here.
-
+# @login_required()
+@authentication_classes([SessionAuthentication, BasicAuthentication])
+@permission_classes([IsAuthenticated, ])
 @api_view(['GET'])
 def apiOverview(request):
     api_urls = {
@@ -26,9 +28,6 @@ def apiOverview(request):
     return Response(api_urls)
 
 
-@login_required(login_url='/admin/')
-@authentication_classes([SessionAuthentication, BasicAuthentication])
-@permission_classes([IsAuthenticated, ])
 @api_view(['GET'])
 def taskList(request):
     if not request.user:
@@ -45,9 +44,6 @@ def taskDetail(request, pk):
     return Response(serializer.data)
 
 
-@login_required(login_url='/admin/')
-@authentication_classes([SessionAuthentication, BasicAuthentication])
-@permission_classes([IsAuthenticated, ])
 @api_view(['POST'])
 def taskCreate(request):
     data = request.data
@@ -62,6 +58,8 @@ def taskCreate(request):
 @api_view(['POST'])
 def taskUpdate(request, pk):
     task = Task.objects.get(id=pk)
+    data = request.data
+    data['user'] = request.user.id
     serializer = TaskSerializer(instance=task, data=request.data)
 
     if serializer.is_valid():

@@ -24,10 +24,12 @@ class Accounts extends React.Component {
         this.startEdit = this.startEdit.bind(this)
         this.deleteItem = this.deleteItem.bind(this)
 
+        this.token = localStorage.getItem('access_token')
+        this.csrftoken = this.getCookie('csrftoken')
+
     };
 
     getCookie(name) {
-        document.getElementById('form').reset();
         let cookieValue = null;
         if (document.cookie && document.cookie !== '') {
             let cookies = document.cookie.split(';');
@@ -50,7 +52,14 @@ class Accounts extends React.Component {
     fetchUsers() {
         console.log('Fetching...')
 
-        fetch('http://0.0.0.0/api/accounts/user_list/')
+        fetch('http://0.0.0.0/api/accounts/user_list/', {
+            headers: {
+                'Content-type': 'application/json',
+                'X-CSRFToken': this.csrftoken,
+                'Authorization': `JWT ${this.token}`,
+
+            }
+        })
             .then(response => response.json())
             .then(data => {
                 this.setState({
@@ -82,12 +91,10 @@ class Accounts extends React.Component {
     }
 
     handleSubmit(e) {
-
         console.log(JSON.stringify(this.state.activeItem))
         e.preventDefault()
         console.log('ITEM:', this.state.activeItem)
 
-        let csrftoken = this.getCookie('csrftoken')
 
         let url = 'http://0.0.0.0/api/accounts/user_create/'
 
@@ -107,7 +114,9 @@ class Accounts extends React.Component {
             method: 'POST',
             headers: {
                 'Content-type': 'application/json',
-                'X-CSRFToken': csrftoken,
+                'X-CSRFToken': this.csrftoken,
+                'Authorization': `JWT ${this.token}`,
+
             },
             body: JSON.stringify(this.state.activeItem)
         }).then((response) => {
@@ -180,7 +189,7 @@ class Accounts extends React.Component {
                                            type="email" name="email"
                                            placeholder="Email"/>
                                     <br/>
-                                     <input onChange={this.handleChange} className="form-control" id="mobile"
+                                    <input onChange={this.handleChange} className="form-control" id="mobile"
                                            value={this.state.activeItem.mobile}
                                            type="text" name="mobile"
                                            placeholder="Mobile"/>

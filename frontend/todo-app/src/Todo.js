@@ -19,6 +19,9 @@ class Todo extends React.Component {
         this.startEdit = this.startEdit.bind(this)
         this.deleteItem = this.deleteItem.bind(this)
         this.strikeUnstrike = this.strikeUnstrike.bind(this)
+
+        this.token = localStorage.getItem('access_token')
+
     };
 
     getCookie(name) {
@@ -41,7 +44,36 @@ class Todo extends React.Component {
         this.fetchTasks()
     }
 
+    saveToken(token) {
+        localStorage.setItem('access_token', JSON.stringify(token));
+    }
+
+    refreshToken(token) {
+        console.log("Refreshing")
+        return fetch('/api/token/refresh', {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                token,
+            }),
+        })
+            .then((res) => {
+                if (res.status === 200) {
+                    const tokenData = res.json();
+                    this.saveToken(JSON.stringify(tokenData));
+                    console.log(tokenData)
+                    return Promise.resolve();
+                }
+                return Promise.reject();
+            });
+    }
+
     fetchTasks() {
+        const token = localStorage.getItem('access_token')
 
         // eslint-disable-next-line no-restricted-globals
         if (!this.getCookie("sessionid")) {
@@ -50,11 +82,23 @@ class Todo extends React.Component {
         }
         console.log('Fetching...')
 
-        fetch('http://0.0.0.0/api/task-list/')
+        fetch('http://0.0.0.0/api/task-list/', {
+            method: 'GET',
+            headers: {
+                'Content-type': 'application/json',
+                'Authorization': `JWT ${token}`,
+            },
+        })
             .then(response => response.json())
             .then(data => this.setState({
                 todoList: data
             }))
+        console.log("Todo list: ", this.state.todoList)
+        // if (this.state.todoList.length == 0) {
+        //     console.log("Lenth 0")
+        //     this.refreshToken(localStorage.getItem("refresh_token"))
+        //     this.fetchTasks()
+        // }
     }
 
     handleChange(e) {
@@ -78,7 +122,7 @@ class Todo extends React.Component {
 
         let url = 'http://0.0.0.0/api/task-create/'
 
-        if (this.state.editing == true) {
+        if (this.state.editing === true) {
             url = `http://0.0.0.0/api/task-update/${this.state.activeItem.id}/`
             this.setState({
                 editing: false
@@ -89,6 +133,7 @@ class Todo extends React.Component {
         fetch(url, {
             method: 'POST', headers: {
                 'Content-type': 'application/json', 'X-CSRFToken': csrftoken,
+                'Authorization': `JWT ${this.token}`,
             }, body: JSON.stringify(this.state.activeItem)
         }).then((response) => {
             this.fetchTasks()
@@ -116,6 +161,7 @@ class Todo extends React.Component {
         fetch(`http://0.0.0.0/api/task-delete/${task.id}/`, {
             method: 'DELETE', headers: {
                 'Content-type': 'application/json', 'X-CSRFToken': csrftoken,
+                'Authorization': `JWT ${this.token}`,
             },
         }).then((response) => {
 
@@ -129,10 +175,18 @@ class Todo extends React.Component {
         task.completed = !task.completed
         let csrftoken = this.getCookie('csrftoken')
         let url = `http://0.0.0.0/api/task-update/${task.id}/`
+        // eslint-disable-next-line no-restricted-globals
+        const token = this.token
+        console.log("Token ", token)
+        console.log("Tasd ID ", task.id)
+        console.log("URL ", url)
+        console.log("Completed ", task.completed)
 
         fetch(url, {
-            method: 'POST', headers: {
+            method: 'POST',
+            headers: {
                 'Content-type': 'application/json', 'X-CSRFToken': csrftoken,
+                'Authorization': `JWT ${token}`,
             }, body: JSON.stringify({'completed': task.completed, 'title': task.title})
         }).then(() => {
             this.fetchTasks()
