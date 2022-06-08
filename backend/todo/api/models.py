@@ -9,5 +9,8 @@ class Task(models.Model):
     completed = models.BooleanField(default=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
+    # class Meta:
+    #     fields = ('title', 'completed',)
+
     def __str__(self):
         return self.title
