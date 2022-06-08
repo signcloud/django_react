@@ -90,15 +90,21 @@ class Todo extends React.Component {
             },
         })
             .then(response => response.json())
-            .then(data => this.setState({
-                todoList: data
-            }))
-        console.log("Todo list: ", this.state.todoList)
-        // if (this.state.todoList.length == 0) {
-        //     console.log("Lenth 0")
-        //     this.refreshToken(localStorage.getItem("refresh_token"))
-        //     this.fetchTasks()
-        // }
+            .then(data => {
+                this.todoList = data;
+                console.log(this.todoList);
+                this.setState({
+                    todoList: data
+                })
+                // console.log(this.todoList.length)
+                if (this.todoList.length == 0) {
+                    console.log("Length 0")
+                    this.refreshToken(localStorage.getItem("refresh_token"))
+                    this.fetchTasks()
+                }
+            })
+        console.log("Todo list: ", this.todoList)
+
     }
 
     handleChange(e) {

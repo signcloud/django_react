@@ -36,8 +36,10 @@ def UserList(request):
     return Response(serializer.data)
 
 
+@permission_classes([IsAuthenticated])
 @api_view(['GET'])
 def UserDetail(request, pk):
+    print(request.user)
     Users = User.objects.get(id=pk)
     serializer = UserSerializer(Users, many=False)
     return Response(serializer.data)
