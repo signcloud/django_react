@@ -1,5 +1,6 @@
 import React from 'react';
 import './App.css';
+import axiosInstance from "./axios";
 
 
 class Accounts extends React.Component {
@@ -52,21 +53,26 @@ class Accounts extends React.Component {
     fetchUsers() {
         console.log('Fetching...')
 
-        fetch('http://0.0.0.0/api/accounts/user_list/', {
-            headers: {
-                'Content-type': 'application/json',
-                'X-CSRFToken': this.csrftoken,
-                'Authorization': `JWT ${this.token}`,
+        let response = axiosInstance.get('http://0.0.0.0/api/accounts/user_list/')
+        response.then(res => this.setState({
+                    accountsList: res.data
+                }))
 
-            }
-        })
-            .then(response => response.json())
-            .then(data => {
-                this.setState({
-                    accountsList: data
-                })
-                console.log(data)
-            })
+        // fetch('http://0.0.0.0/api/accounts/user_list/', {
+        //     headers: {
+        //         'Content-type': 'application/json',
+        //         'X-CSRFToken': this.csrftoken,
+        //         'Authorization': `JWT ${this.token}`,
+        //
+        //     }
+        // })
+        //     .then(response => response.json())
+        //     .then(data => {
+        //         this.setState({
+        //             accountsList: data
+        //         })
+        //         console.log(data)
+        //     })
     }
 
     handleChange(e) {
@@ -169,11 +175,6 @@ class Accounts extends React.Component {
                         <form onSubmit={this.handleSubmit} id="form">
                             <div className="flex-wrapper">
                                 <div style={{flex: 6}}>
-                                    {/*<input onChange={this.handleChange} className="form-control" id="username"*/}
-                                    {/*       value={this.state.activeItem.username}*/}
-                                    {/*       type="text" name="username"*/}
-                                    {/*       placeholder="Username"/>*/}
-                                    {/*<br/>*/}
                                     <input onChange={this.handleChange} className="form-control" id="first_name"
                                            value={this.state.activeItem.first_name}
                                            type="text" name="first_name"
