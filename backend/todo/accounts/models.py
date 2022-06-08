@@ -45,8 +45,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     mobile = models.CharField(max_length=50, blank=True)
     address = models.CharField(max_length=250)
 
-    is_staff = models.BooleanField(default=True)  # must needed, otherwise you won't be able to loginto django-admin.
-    is_active = models.BooleanField(default=True)  # must needed, otherwise you won't be able to loginto django-admin.
+    is_staff = models.BooleanField(default=True)  # must needed, otherwise you won't be able to login to django-admin.
+    is_active = models.BooleanField(default=True)  # must needed, otherwise you won't be able to login to django-admin.
     is_superuser = models.BooleanField(default=False)  # this field we inherit from PermissionsMixin.
 
     objects = CustomUserManager()
@@ -55,5 +55,5 @@ class User(AbstractBaseUser, PermissionsMixin):
     REQUIRED_FIELDS = ['first_name', 'last_name', 'mobile']
 
     class Meta:
-        verbose_name = 'User'
-        verbose_name_plural = 'Users'
+        verbose_name = 'user'
+        verbose_name_plural = 'users'

@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-
+import axiosInstance from "./axios";
 
 class Todo extends React.Component {
     constructor(props) {
@@ -73,37 +73,11 @@ class Todo extends React.Component {
     }
 
     fetchTasks() {
-        const token = localStorage.getItem('access_token')
-
-        // eslint-disable-next-line no-restricted-globals
-        if (!this.getCookie("sessionid")) {
-            // alert("No cookie");
-            // window.location.replace("/login");
-        }
         console.log('Fetching...')
-
-        fetch('http://0.0.0.0/api/task-list/', {
-            method: 'GET',
-            headers: {
-                'Content-type': 'application/json',
-                'Authorization': `JWT ${token}`,
-            },
-        })
-            .then(response => response.json())
-            .then(data => {
-                this.todoList = data;
-                console.log(this.todoList);
-                this.setState({
-                    todoList: data
-                })
-                // console.log(this.todoList.length)
-                if (this.todoList.length == 0) {
-                    console.log("Length 0")
-                    this.refreshToken(localStorage.getItem("refresh_token"))
-                    this.fetchTasks()
-                }
-            })
-        console.log("Todo list: ", this.todoList)
+        let response = axiosInstance.get('http://0.0.0.0/api/task-list/')
+        response.then(res => this.setState({
+                    todoList: res.data
+                }))
 
     }
 
@@ -183,10 +157,6 @@ class Todo extends React.Component {
         let url = `http://0.0.0.0/api/task-update/${task.id}/`
         // eslint-disable-next-line no-restricted-globals
         const token = this.token
-        console.log("Token ", token)
-        console.log("Tasd ID ", task.id)
-        console.log("URL ", url)
-        console.log("Completed ", task.completed)
 
         fetch(url, {
             method: 'POST',

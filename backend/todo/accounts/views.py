@@ -1,9 +1,12 @@
 from rest_framework import generics
+from rest_framework import status
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from knox.models import AuthToken
+from rest_framework.views import APIView
+from rest_framework_simplejwt.tokens import RefreshToken
 
 from .serializers import UserSerializer, RegisterSerializer
 from django.contrib.auth import login
@@ -21,6 +24,7 @@ def apiOverview(request):
         'List': '/accounts/user_list/',
         'Detail View': '/user_detail/<str:pk>/',
         'Login': '/accounts/login/',
+        'Logout': '/accounts/logout/',
         'Create': '/accounts/user_create/',
         'Update': '/accounts/user_update/<str:pk>/',
         'Delete': '/accounts/user_delete/<str:pk>/',
@@ -36,10 +40,13 @@ def UserList(request):
     return Response(serializer.data)
 
 
-@permission_classes([IsAuthenticated])
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def UserDetail(request, pk):
-    print(request.user)
+    print(pk)
+    if pk == "n":
+        pk = request.user.id
+
     Users = User.objects.get(id=pk)
     serializer = UserSerializer(Users, many=False)
     return Response(serializer.data)
@@ -104,6 +111,7 @@ class LoginAPI(KnoxLoginView):
         login(request, user)
         return super(LoginAPI, self).post(request, format=None)
 
+
 # class UserDelete(DestroyAPIView):
 #     serializer_class = UserSerializer
 #
@@ -146,3 +154,15 @@ class LoginAPI(KnoxLoginView):
 #             serializer.save()
 #             return Response(serializer.data)
 #         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+class LogoutView(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request):
+        try:
+            refresh_token = request.data["refresh_token"]
+            token = RefreshToken(refresh_token)
+            token.blacklist()
+
+            return Response(status=status.HTTP_205_RESET_CONTENT)
+        except Exception as e:
+            return Response(status=status.HTTP_400_BAD_REQUEST)

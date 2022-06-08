@@ -15,7 +15,6 @@ services:
     command: sh entrypoint.sh
     volumes:
       - django_static_volume:/code/staticfiles
-#      - ./todo:/code
     env_file:
        - ./.env
     ports:
