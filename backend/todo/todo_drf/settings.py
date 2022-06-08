@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'debug_toolbar',
 
     'api.apps.ApiConfig',
 
@@ -60,13 +61,14 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'todo_drf.urls'
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
         'DIRS': [
             os.path.join(BASE_DIR, 'frontend/../../frontend/build')
         ],
@@ -191,4 +193,8 @@ CORS_ORIGIN_WHITELIST = [
     "http://localhost",
     "http://localhost:8000",
     "http://localhost:3000",
+]
+INTERNAL_IPS = [
+    '127.0.0.1',
+    '0.0.0.0',
 ]
