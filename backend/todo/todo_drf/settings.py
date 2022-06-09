@@ -140,7 +140,6 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, '../../frontend/todo-app/build/static/')
 ]
 
-
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticatedOrReadOnly',
@@ -184,7 +183,15 @@ SIMPLE_JWT = {
 
 CORS_ORIGIN_ALLOW_ALL = True
 
+CORS_ALLOWED_ORIGIN_REGEXES = [
+    r"^http://\w+\.localhost$",
+]
+
 CORS_ORIGIN_WHITELIST = [
+    '*',
+    'http://193.142.59.187',
+    'http://193.142.59.187:3000',
+    'http://193.142.59.187:8000',
     "http://0.0.0.0",
     "http://0.0.0.0:3000",
     "http://0.0.0.0:8000",
@@ -197,6 +204,7 @@ CORS_ORIGIN_WHITELIST = [
 if DEBUG:
     import os  # only if you haven't already imported this
     import socket  # only if you haven't already imported this
+
     hostname, _, ips = socket.gethostbyname_ex(socket.gethostname())
     INTERNAL_IPS = [ip[: ip.rfind(".")] + ".1" for ip in ips] + ["127.0.0.1", '0.0.0.0']
 
