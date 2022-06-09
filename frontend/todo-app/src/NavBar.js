@@ -12,7 +12,7 @@ class NavBar extends React.Component {
             user_info: ""
         }
 
-        this.promise = axiosInstance.get("http://0.0.0.0/api/v1/user_detail/n/");
+        this.promise = axiosInstance.get(`http://${window.location.host}/api/v1/user_detail/n/`);
         this.promise.then(res => this.setState({
             user_info: res.data
         }))

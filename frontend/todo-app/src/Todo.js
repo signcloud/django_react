@@ -153,7 +153,7 @@ class Todo extends React.Component {
         task.completed = !task.completed
         let csrftoken = this.getCookie('csrftoken')
         let url = `http://${window.location.host}/api/v1/task-update/${task.id}/`
-        // eslint-disable-next-line no-restricted-globals
+        // eslint-disable-next-line no-restricted-globals   
         const token = this.token
 
         fetch(url, {
