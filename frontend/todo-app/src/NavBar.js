@@ -25,15 +25,13 @@ class NavBar extends React.Component {
     render() {
         let user_info = this.state.user_info
         console.log(user_info)
-        // let login
-        // if (user_info.email) {
-        //     login = <span><Link to="/logout">Logout </Link> {user_info.email}</span>
-        // } else {
-        //     login = <Link to="/login">Login</Link>
-        // }
+        let login
+        if (user_info.email) {
+            login = `${user_info.first_name} ${user_info.last_name} (${user_info.email})`
+        }
         return (
             <nav className="task-wrapper" id="task-container">
-                {user_info.first_name} {user_info.last_name} ({user_info.email}) <Link to="/login">Login</Link> | <Link
+                {login} <Link to="/login">Login</Link> | <Link
                 to="/">Todos</Link> | <Link to="/accounts">Accounts</Link>
             </nav>
         )
