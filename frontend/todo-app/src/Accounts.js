@@ -59,6 +59,7 @@ class Accounts extends React.Component {
                 }))
 
         // fetch('http://${window.location.host}/api/accounts/user_list/', {
+        
         //     headers: {
         //         'Content-type': 'application/json',
         //         'X-CSRFToken': this.csrftoken,
