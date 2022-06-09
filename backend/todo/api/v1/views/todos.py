@@ -1,14 +1,12 @@
 from django.shortcuts import render, redirect
-from django.http import JsonResponse
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework.permissions import IsAuthenticated
-from django.contrib.auth.decorators import login_required
 from rest_framework.response import Response
-from .serializers import TaskSerializer
 
-from .models import Task
+from api.v1.serializers.todos import TaskSerializer
+from todo.models import Task
 
 
 # Create your views here.
@@ -18,11 +16,17 @@ from .models import Task
 @api_view(['GET'])
 def apiOverview(request):
     api_urls = {
-        'List': '/task-list/',
-        'Detail View': '/task-detail/<str:pk>/',
-        'Create': '/task-create/',
-        'Update': '/task-update/<str:pk>/',
-        'Delete': '/task-delete/<str:pk>/',
+        'Task List': '/task-list/',
+        'Task Detail View': '/task-detail/<str:pk>/',
+        'Task Create': '/task-create/',
+        'Task Update': '/task-update/<str:pk>/',
+        'Task Delete': '/task-delete/<str:pk>/',
+        '-------------':'----------',
+        'User List': '/user_list/',
+        'User Detail View': '/user_detail/<str:pk>/',
+        'User Create': '/user_create/',
+        'User Update': '/user_update/<str:pk>/',
+        'User Delete': '/user_delete/<str:pk>/',
     }
 
     return Response(api_urls)

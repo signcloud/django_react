@@ -53,7 +53,7 @@ class Accounts extends React.Component {
     fetchUsers() {
         console.log('Fetching...')
 
-        let response = axiosInstance.get('http://0.0.0.0/api/accounts/user_list/')
+        let response = axiosInstance.get('http://0.0.0.0/api/v1/user_list/')
         response.then(res => this.setState({
                     accountsList: res.data
                 }))
@@ -102,11 +102,11 @@ class Accounts extends React.Component {
         console.log('ITEM:', this.state.activeItem)
 
 
-        let url = 'http://0.0.0.0/api/accounts/user_create/'
+        let url = 'http://0.0.0.0/api/v1/user_create/'
 
         if (this.state.editing == true) {
 
-            url = `http://0.0.0.0/api/accounts/user_update/${this.state.activeItem.id}/`
+            url = `http://0.0.0.0/api/v1/user_update/${this.state.activeItem.id}/`
             console.log(url)
             this.setState({
                 editing: false
@@ -153,7 +153,7 @@ class Accounts extends React.Component {
     deleteItem(user) {
         let csrftoken = this.getCookie('csrftoken')
 
-        fetch(`http://0.0.0.0/api/accounts/user_delete/${user.id}/`, {
+        fetch(`http://0.0.0.0/api/v1/user_delete/${user.id}/`, {
             method: 'DELETE',
             headers: {
                 'Content-type': 'application/json',
