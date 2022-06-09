@@ -43,7 +43,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     first_name = models.CharField(max_length=240, blank=True)
     last_name = models.CharField(max_length=255, blank=True)
     mobile = models.CharField(max_length=50, blank=True)
-    address = models.CharField(max_length=250)
 
     is_staff = models.BooleanField(default=True)  # must needed, otherwise you won't be able to login to django-admin.
     is_active = models.BooleanField(default=True)  # must needed, otherwise you won't be able to login to django-admin.
