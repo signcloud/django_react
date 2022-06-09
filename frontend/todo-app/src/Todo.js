@@ -74,7 +74,7 @@ class Todo extends React.Component {
 
     fetchTasks() {
         console.log('Fetching...')
-        let response = axiosInstance.get('http://0.0.0.0/api/task-list/')
+        let response = axiosInstance.get('http://0.0.0.0/api/v1/task-list/')
         response.then(res => this.setState({
                     todoList: res.data
                 }))
@@ -100,10 +100,10 @@ class Todo extends React.Component {
 
         let csrftoken = this.getCookie('csrftoken')
 
-        let url = 'http://0.0.0.0/api/task-create/'
+        let url = 'http://0.0.0.0/api/v1/task-create/'
 
         if (this.state.editing === true) {
-            url = `http://0.0.0.0/api/task-update/${this.state.activeItem.id}/`
+            url = `http://0.0.0.0/api/v1/task-update/${this.state.activeItem.id}/`
             this.setState({
                 editing: false
             })
@@ -138,7 +138,7 @@ class Todo extends React.Component {
     deleteItem(task) {
         let csrftoken = this.getCookie('csrftoken')
 
-        fetch(`http://0.0.0.0/api/task-delete/${task.id}/`, {
+        fetch(`http://0.0.0.0/api/v1/task-delete/${task.id}/`, {
             method: 'DELETE', headers: {
                 'Content-type': 'application/json', 'X-CSRFToken': csrftoken,
                 'Authorization': `JWT ${this.token}`,
@@ -154,7 +154,7 @@ class Todo extends React.Component {
 
         task.completed = !task.completed
         let csrftoken = this.getCookie('csrftoken')
-        let url = `http://0.0.0.0/api/task-update/${task.id}/`
+        let url = `http://0.0.0.0/api/v1/task-update/${task.id}/`
         // eslint-disable-next-line no-restricted-globals
         const token = this.token
 

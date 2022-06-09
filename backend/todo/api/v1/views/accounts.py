@@ -8,10 +8,9 @@ from knox.models import AuthToken
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from .serializers import UserSerializer, RegisterSerializer
+from api.v1.serializers.accounts import UserSerializer, RegisterSerializer
 from django.contrib.auth import login
-from django.contrib.auth.models import User
-from .models import User
+from accounts.models import User
 
 from rest_framework import permissions
 from rest_framework.authtoken.serializers import AuthTokenSerializer
@@ -21,13 +20,16 @@ from knox.views import LoginView as KnoxLoginView
 @api_view(['GET'])
 def apiOverview(request):
     api_urls = {
-        'List': '/accounts/user_list/',
+        'List': '/task-list/',
+        'Detail View': '/task-detail/<str:pk>/',
+        'Create': '/task-create/',
+        'Update': '/task-update/<str:pk>/',
+        'Delete': '/task-delete/<str:pk>/',
+        'User List': '/user_list/',
         'Detail View': '/user_detail/<str:pk>/',
-        'Login': '/accounts/login/',
-        'Logout': '/accounts/logout/',
-        'Create': '/accounts/user_create/',
-        'Update': '/accounts/user_update/<str:pk>/',
-        'Delete': '/accounts/user_delete/<str:pk>/',
+        'Create': '/user_create/',
+        'Update': '/user_update/<str:pk>/',
+        'Delete': '/user_delete/<str:pk>/',
     }
 
     return Response(api_urls)

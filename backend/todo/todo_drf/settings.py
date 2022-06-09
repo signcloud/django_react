@@ -39,12 +39,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'debug_toolbar',
 
-    'api.apps.ApiConfig',
+    'todo.apps.ApiConfig',
 
     'rest_framework',
     'corsheaders',
     'knox',
-    'accounts.apps.AccountsConfig',
+    'accounts',
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
 
@@ -70,7 +70,7 @@ TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
         'DIRS': [
-            os.path.join(BASE_DIR, 'frontend/../../frontend/build')
+            os.path.join(BASE_DIR, '../../frontend/todo-app/build/')
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -136,9 +136,9 @@ USE_TZ = True
 STATIC_URL = 'staticfiles/'
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
-# STATICFILES_DIRS = [
-#     os.path.join(BASE_DIR, 'frontend/build/../../frontend/build/static')
-# ]
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, '../../frontend/todo-app/build/static/')
+]
 
 
 REST_FRAMEWORK = {
@@ -173,7 +173,7 @@ SIMPLE_JWT = {
 
     'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
     'TOKEN_TYPE_CLAIM': 'token_type',
-    'TOKEN_USER_CLASS': 'rest_framework_simplejwt.models.TokenUser',
+    'TOKEN_USER_CLASS': 'rest_framework_simplejwt.views.TokenUser',
 
     'JTI_CLAIM': 'jti',
 
@@ -194,6 +194,12 @@ CORS_ORIGIN_WHITELIST = [
     "http://localhost:8000",
     "http://localhost:3000",
 ]
+if DEBUG:
+    import os  # only if you haven't already imported this
+    import socket  # only if you haven't already imported this
+    hostname, _, ips = socket.gethostbyname_ex(socket.gethostname())
+    INTERNAL_IPS = [ip[: ip.rfind(".")] + ".1" for ip in ips] + ["127.0.0.1", '0.0.0.0']
+
 INTERNAL_IPS = [
     '127.0.0.1',
     '0.0.0.0',

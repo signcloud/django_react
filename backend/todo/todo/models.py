@@ -2,7 +2,7 @@ from django.db import models
 from accounts.models import User
 
 
-# Create your models here.
+# Create your views here.
 
 class Task(models.Model):
     title = models.CharField(max_length=200)
