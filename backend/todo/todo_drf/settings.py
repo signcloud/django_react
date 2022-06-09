@@ -136,9 +136,9 @@ USE_TZ = True
 STATIC_URL = 'staticfiles/'
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, '../../frontend/todo-app/build/static/')
-]
+# STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR, '../../frontend/todo-app/build/static/')
+# ]
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
@@ -184,7 +184,7 @@ SIMPLE_JWT = {
 CORS_ORIGIN_ALLOW_ALL = True
 
 CORS_ALLOWED_ORIGIN_REGEXES = [
-    r"^http://\w+\.localhost$",
+    r"^http://193.142.59.187",
 ]
 
 CORS_ORIGIN_WHITELIST = [
