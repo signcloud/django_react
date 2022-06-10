@@ -184,7 +184,7 @@ SIMPLE_JWT = {
 CORS_ORIGIN_ALLOW_ALL = True
 
 CORS_ALLOWED_ORIGIN_REGEXES = [
-    r"^http://\w+\.localhost$",
+    r"^http://193.142.59.187",
 ]
 
 CORS_ORIGIN_WHITELIST = [
