@@ -53,27 +53,10 @@ class Accounts extends React.Component {
     fetchUsers() {
         console.log('Fetching...')
 
-        let response = axiosInstance.get(`http://${window.location.host}/api/v1/user_list/`)
+        let response = axiosInstance.get(`http://${window.location.host}/api/v1/user/user/`)
         response.then(res => this.setState({
                     accountsList: res.data
                 }))
-
-        // fetch('http://${window.location.host}/api/accounts/user_list/', {
-        
-        //     headers: {
-        //         'Content-type': 'application/json',
-        //         'X-CSRFToken': this.csrftoken,
-        //         'Authorization': `JWT ${this.token}`,
-        //
-        //     }
-        // })
-        //     .then(response => response.json())
-        //     .then(data => {
-        //         this.setState({
-        //             accountsList: data
-        //         })
-        //         console.log(data)
-        //     })
     }
 
     handleChange(e) {
@@ -103,22 +86,24 @@ class Accounts extends React.Component {
         console.log('ITEM:', this.state.activeItem)
 
 
-        let url = `http://${window.location.host}/api/v1/user_create/`
+        let url = `http://${window.location.host}/api/v1/user/user/`
 
         if (this.state.editing == true) {
 
-            url = `http://${window.location.host}/api/v1/user_update/${this.state.activeItem.id}/`
+            url = `http://${window.location.host}/api/v1/user/user/${this.state.activeItem.id}/`
             console.log(url)
             this.setState({
                 editing: false
             })
         }
 
+        let method = this.state.editing === true ? "PUT" : "POST"
+
 
         console.log(JSON.stringify(this.state.activeItem))
 
         fetch(url, {
-            method: 'POST',
+            method: `${method}`,
             headers: {
                 'Content-type': 'application/json',
                 'X-CSRFToken': this.csrftoken,
@@ -154,11 +139,13 @@ class Accounts extends React.Component {
     deleteItem(user) {
         let csrftoken = this.getCookie('csrftoken')
 
-        fetch(`http://${window.location.host}/api/v1/user_delete/${user.id}/`, {
+        fetch(`http://${window.location.host}/api/v1/user/user/${user.id}/`, {
             method: 'DELETE',
             headers: {
                 'Content-type': 'application/json',
-                'X-CSRFToken': csrftoken,
+                'X-CSRFToken': this.csrftoken,
+                'Authorization': `JWT ${this.token}`,
+
             },
         }).then((response) => {
 

@@ -44,40 +44,12 @@ class Todo extends React.Component {
         this.fetchTasks()
     }
 
-    saveToken(token) {
-        localStorage.setItem('access_token', JSON.stringify(token));
-    }
-
-    refreshToken(token) {
-        console.log("Refreshing")
-        return fetch('/api/token/refresh', {
-            method: 'POST',
-            credentials: 'include',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                token,
-            }),
-        })
-            .then((res) => {
-                if (res.status === 200) {
-                    const tokenData = res.json();
-                    this.saveToken(JSON.stringify(tokenData));
-                    console.log(tokenData)
-                    return Promise.resolve();
-                }
-                return Promise.reject();
-            });
-    }
-
     fetchTasks() {
         console.log('Fetching...')
-        let response = axiosInstance.get(`http://${window.location.host}/api/v1/task-list/`)
+        let response = axiosInstance.get(`http://${window.location.host}/api/v1/task/task/`)
         response.then(res => this.setState({
-                    todoList: res.data
-                }))
+            todoList: res.data
+        }))
 
     }
 
@@ -98,18 +70,19 @@ class Todo extends React.Component {
 
         let csrftoken = this.getCookie('csrftoken')
 
-        let url = `http://${window.location.host}/api/v1/task-create/`
+        let url = `http://${window.location.host}/api/v1/task/task/`
 
         if (this.state.editing === true) {
-            url = `http://${window.location.host}/api/v1/task-update/${this.state.activeItem.id}/`
+            url = `http://${window.location.host}/api/v1/task/task/${this.state.activeItem.id}/`
             this.setState({
                 editing: false
             })
         }
 
+        let method = this.state.editing === true ? "PUT" : "POST"
 
         fetch(url, {
-            method: 'POST', headers: {
+            method: `${method}`, headers: {
                 'Content-type': 'application/json', 'X-CSRFToken': csrftoken,
                 'Authorization': `JWT ${this.token}`,
             }, body: JSON.stringify(this.state.activeItem)
@@ -136,7 +109,7 @@ class Todo extends React.Component {
     deleteItem(task) {
         let csrftoken = this.getCookie('csrftoken')
 
-        fetch(`http://${window.location.host}/api/v1/task-delete/${task.id}/`, {
+        fetch(`http://${window.location.host}/api/v1/task/task/${task.id}/`, {
             method: 'DELETE', headers: {
                 'Content-type': 'application/json', 'X-CSRFToken': csrftoken,
                 'Authorization': `JWT ${this.token}`,
@@ -152,12 +125,12 @@ class Todo extends React.Component {
 
         task.completed = !task.completed
         let csrftoken = this.getCookie('csrftoken')
-        let url = `http://${window.location.host}/api/v1/task-update/${task.id}/`
+        let url = `http://${window.location.host}/api/v1/task/task/${task.id}/`
         // eslint-disable-next-line no-restricted-globals
         const token = this.token
 
         fetch(url, {
-            method: 'POST',
+            method: 'PUT',
             headers: {
                 'Content-type': 'application/json', 'X-CSRFToken': csrftoken,
                 'Authorization': `JWT ${token}`,

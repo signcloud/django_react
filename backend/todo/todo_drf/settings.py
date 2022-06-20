@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'debug_toolbar',
 
     'todo.apps.ApiConfig',
-
+    'drf_yasg',
     'rest_framework',
     'corsheaders',
     'knox',
@@ -142,7 +142,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticatedOrReadOnly',
+        'rest_framework.permissions.AllowAny',
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
@@ -188,10 +188,6 @@ CORS_ALLOWED_ORIGIN_REGEXES = [
 ]
 
 CORS_ORIGIN_WHITELIST = [
-    '*',
-    'http://193.142.59.187',
-    'http://193.142.59.187:3000',
-    'http://193.142.59.187:8000',
     "http://0.0.0.0",
     "http://0.0.0.0:3000",
     "http://0.0.0.0:8000",
@@ -201,6 +197,18 @@ CORS_ORIGIN_WHITELIST = [
     "http://localhost:8000",
     "http://localhost:3000",
 ]
+
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        'basic': {
+            'type': 'basic'
+        }
+    },
+}
+
+LOGIN_URL = 'rest_framework:login'
+LOGOUT_URL = 'rest_framework:logout'
+
 if DEBUG:
     import os  # only if you haven't already imported this
     import socket  # only if you haven't already imported this

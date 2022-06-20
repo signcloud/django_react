@@ -2,8 +2,6 @@ import React from "react";
 import {Link} from "react-router-dom";
 import './App.css';
 import axiosInstance from "./axios";
-import {render} from "react-dom";
-
 
 class NavBar extends React.Component {
     constructor(props) {
@@ -12,11 +10,12 @@ class NavBar extends React.Component {
             user_info: ""
         }
 
-        this.promise = axiosInstance.get(`http://${window.location.host}/api/v1/user_detail/n/`);
+        // this.user_id = this.getCookie('user')
+
+        this.promise = axiosInstance.get(`http://${window.location.host}/api/v1/user/user/current/`);
         this.promise.then(res => this.setState({
             user_info: res.data
         }))
-
     }
 
     // console.log(this.state.user_info)
