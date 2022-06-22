@@ -10,12 +10,18 @@ class NavBar extends React.Component {
             user_info: ""
         }
 
-        // this.user_id = this.getCookie('user')
+        this.update_user()
 
+        setInterval(this.update_user, 5000)
+    }
+
+    update_user = () => {
         this.promise = axiosInstance.get(`http://${window.location.host}/api/v1/user/user/current/`);
+        console.log("This is Promise IN update_user(): ", this.promise)
         this.promise.then(res => this.setState({
             user_info: res.data
         }))
+
     }
 
     // console.log(this.state.user_info)
@@ -35,6 +41,8 @@ class NavBar extends React.Component {
             </nav>
         )
     }
+
+
 }
 
 export default NavBar
